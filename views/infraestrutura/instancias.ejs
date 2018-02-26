@@ -1,0 +1,115 @@
+<%- include ../layouts/header.ejs %>
+        <!-- Main content -->
+        <main class="main">
+
+            <div class="container-fluid">
+              <div class="animated fadeIn">
+                  <div class="card">
+                      <div class="card-header">
+                          <i class="fa fa-edit"></i> Angular DataTables
+                          <div class="card-actions">
+                              <a href="http://l-lin.github.io/angular-datatables/#/gettingStarted">
+                                  <small class="text-muted">docs</small>
+                              </a>
+                          </div>
+                      </div>
+                      <div class="card-block">
+                          <button type="button" class="btn btn-primary" id="testecampo">Criar VM</button>
+                          <table class="table table-striped table-bordered datatable">
+                              <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Plano</th>
+                                    <th>IP</th>
+                                    <th>Zona</th>
+                                    <th>Status</th>
+                                    <th>Ação</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <% for(var i=0; i < vms.length; i++) { %>
+                                  <tr>
+                                    <td><%= vms[i].name %></td>
+                                    <td><%= vms[i].serviceofferingname %></td>
+                                    <td><%= vms[i].nic[0].ipaddress %></td>
+                                    <td><%= vms[i].zonename %></td>
+                                    <% if (vms[i].state == 'Running') { %>
+                                      <td><div id="divStatus-<%= vms[i].id %>"><span class="badge badge-success"><%= vms[i].state %></span></div></td>
+                                      <td>
+                                        <div id="divAcao-<%= vms[i].id %>">
+                                        <button type="button" class="btn btn-success" onclick="stopVM(this)" name="<%= vms[i].id %>">
+                                          <i class="fa fa-pause"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-success">
+                                          <i class="fa icon-refresh"></i>
+                                        </button>
+                                        <button class="btn btn-info" id="btEdit" href="#">
+                                          <i class="fa fa-edit "></i>
+                                        </button>
+                                        </div>
+                                      </td>
+                                    <% } else if (vms[i].state == 'Stopped') { %>
+                                      <td><div id="divStatus-<%= vms[i].id %>"><span class="badge badge-danger"><%= vms[i].state %></span></div></td>
+                                      <td>
+                                        <div id="divAcao-<%= vms[i].id %>">
+                                        <button type="button" class="btn btn-success" name="<%= vms[i].id %>" onclick="startVM(this)">
+                                          <i class="fa fa-play"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-danger" data-style="zoom-in">
+                                          <i class="fa fa-trash"></i>
+                                        </button>
+                                        <button class="btn btn-info" href="#">
+                                          <i class="fa fa-edit "></i>
+                                        </button>
+                                        </div>
+                                      </td>
+                                    <% } else if (vms[i].state == 'Destroyed') { %>
+                                      <td><div id="divStatus-<%= vms[i].id %>"><span class="badge badge-default"><%= vms[i].state %></span></div></td>
+                                      <td>
+                                        <div id="divAcao-<%= vms[i].id %>">
+                                        <button type="button" class="btn btn-success">
+                                            <i class="fa icon-reload"></i>
+                                        </button>
+                                        </div>
+                                      </td>
+                                    <% } else if (vms[i].state == 'Stopping') { %>
+                                      <td><span class="badge badge-warning"><%= vms[i].state %></span></td>
+                                      <td>
+                                        <div class="sk-wave">
+                                          <div class="sk-rect sk-rect1"></div>
+                                          <div class="sk-rect sk-rect2"></div>
+                                          <div class="sk-rect sk-rect3"></div>
+                                          <div class="sk-rect sk-rect4"></div>
+                                          <div class="sk-rect sk-rect5"></div>
+                                        </div>
+                                      </td>
+                                    <% } else if (vms[i].state == 'Starting') { %>
+                                      <td><span class="badge badge-default"><%= vms[i].state %></span></td>
+                                      <td>
+                                        <div class="sk-wave">
+                                          <div class="sk-rect sk-rect1"></div>
+                                          <div class="sk-rect sk-rect2"></div>
+                                          <div class="sk-rect sk-rect3"></div>
+                                          <div class="sk-rect sk-rect4"></div>
+                                          <div class="sk-rect sk-rect5"></div>
+                                        </div>
+                                      </td>
+                                  <% } %>
+                                  </tr>
+                                <% } %>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+
+            </div>
+            <!-- /.conainer-fluid -->
+        </main>
+    </div>
+
+<%- include ../layouts/footer.ejs %>
+<!-- Plugins and scripts required by this views -->
+<script src="/../javascripts/libs/jquery.dataTables.min.js"></script>
+<script src="/../javascripts/libs/dataTables.bootstrap4.min.js"></script>
+<script src="/../javascripts/views/instancias.js"></script>
